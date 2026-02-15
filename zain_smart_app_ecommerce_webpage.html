@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zain International Clothing</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 16px;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 12px;
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1976d2;
+}
+
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.details {
+    font-size: 12px;
+}
+
+.order-btn {
+    background-color: #66bb6a;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.order-btn.glow {
+    background-color: #4caf50;
+    box-shadow: 0 0 8px #4caf50;
+}
+
+/* Modal Styles */
+.product-modal {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.modal-content {
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    max-width:500px;
+    width:90%;
+    position:relative;
+    text-align:center;
+}
+
+.modal-content img {
+    width:100%;
+    height:250px;
+    object-fit:cover;
+    border-radius:8px;
+    margin-bottom:12px;
+}
+
+.modal-content h2 {
+    margin-bottom:8px;
+}
+
+.modal-content p {
+    margin:6px 0;
+}
+
+.modal-content .close {
+    position:absolute;
+    top:10px;
+    right:16px;
+    font-size:24px;
+    cursor:pointer;
+    font-weight:bold;
+    color:#333;
+}
+
+.modal-content .modal-order-btn {
+    background-color: #888;
+    color:white;
+    padding:8px 16px;
+    border-radius:20px;
+    cursor:pointer;
+    margin-top:12px;
+    display:inline-block;
+    transition:0.3s;
+}
+
+.modal-content .modal-order-btn:hover {
+    background-color: #555;
+}
+</style>
+
+</head>
+
+<body>
+<header>Zain International Clothing</header>
+
+<div class="container">
+    <input id="colorSearch" type="text" placeholder="Search by Color" class="search-bar">
+    <input id="priceSearch" type="text" placeholder="Search by Price" class="search-bar">
+    <input id="waistSearch" type="text" placeholder="Search by Waist" class="search-bar">
+
+    <div class="product-grid" id="productGrid"></div>
+</div>
+
+<script>
+// EXACTLY 13 products - ALL Blue/Navy Blue colors - ALL 1500 PKR ✓
+const products = [
+    // Waist 32
+    { name: "Jeans Blue W32", price: "1500", color: "Blue", waist: "32", length: "40", image: "assets/jeansblue.png" },
+    { name: "Jeans Navy Blue W32", price: "1500", color: "Navy Blue", waist: "32", length: "40", image: "assets/jeansblue.png" },
+    { name: "Jeans Blue W32", price: "1500", color: "Blue", waist: "32", length: "38", image: "assets/jeansblue.png" },
+
+    // Waist 34
+    { name: "Jeans Navy Blue W34", price: "1500", color: "Navy Blue", waist: "34", length: "38", image: "assets/jeansblue.png" },
+    { name: "Jeans Blue W34", price: "1500", color: "Blue", waist: "34", length: "37", image: "assets/jeansblue.png" },
+    { name: "Jeans Navy Blue W34", price: "1500", color: "Navy Blue", waist: "34", length: "39", image: "assets/jeansblue.png" },
+    { name: "Jeans Blue W34", price: "1500", color: "Blue", waist: "34", length: "40", image: "assets/jeansblue.png" },
+    { name: "Jeans Navy Blue W34", price: "1500", color: "Navy Blue", waist: "34", length: "38", image: "assets/jeansblue.png" },
+    { name: "Jeans Blue W34", price: "1500", color: "Blue", waist: "34", length: "38", image: "assets/jeansblue.png" },
+
+    // Waist 36
+    { name: "Jeans Navy Blue W36", price: "1500", color: "Navy Blue", waist: "36", length: "40", image: "assets/jeansblue.png" },
+    { name: "Jeans Blue W36", price: "1500", color: "Blue", waist: "36", length: "39", image: "assets/jeansblue.png" },
+    { name: "Jeans Navy Blue W36", price: "1500", color: "Navy Blue", waist: "36", length: "40", image: "assets/jeansblue.png" },
+    { name: "Jeans Blue W36", price: "1500", color: "Blue", waist: "36", length: "39", image: "assets/jeansblue.png" }
+];
+
+const productGrid = document.getElementById("productGrid");
+
+function renderProducts() {
+    const colorQuery = document.getElementById("colorSearch").value.toLowerCase();
+    const priceQuery = document.getElementById("priceSearch").value;
+    const waistQuery = document.getElementById("waistSearch").value;
+
+    productGrid.innerHTML = "";
+
+    products.filter(p =>
+        p.color.toLowerCase().includes(colorQuery) &&
+        p.price.includes(priceQuery) &&
+        p.waist.includes(waistQuery)
+    ).forEach(p => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        card.innerHTML = `
+            <img src="${p.image}" alt="${p.name}">
+            <div class="product-info">
+                <div class="top-row">
+                    <div class="product-name">${p.name}</div>
+                    <div class="price">${p.price} PKR</div>
+                </div>
+                <div class="bottom-row">
+                    <div class="details">Waist: ${p.waist} | Length: ${p.length}</div>
+                    <div class="order-btn">Order Now</div>
+                </div>
+            </div>
+        `;
+
+        productGrid.appendChild(card);
+
+        const btn = card.querySelector(".order-btn");
+        setInterval(() => btn.classList.toggle("glow"), 800);
+
+        card.addEventListener('click', () => showModal(p));
+    });
+}
+
+// Modal popup function
+function showModal(product) {
+    const modal = document.createElement('div');
+    modal.className = 'product-modal';
+
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="${product.image}" alt="${product.name}">
+            <h2>${product.name}</h2>
+            <p><strong>Price:</strong> ${product.price} PKR</p>
+            <p><strong>Color:</strong> ${product.color}</p>
+            <p><strong>Waist:</strong> ${product.waist} | <strong>Length:</strong> ${product.length}</p>
+            <p>Premium quality Blue/Navy Blue denim jeans. Perfect fit and comfort. All at 1500 PKR.</p>
+            <div class="modal-order-btn">Go Back</div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Close modal on X click
+    modal.querySelector('.close').addEventListener('click', () => modal.remove());
+
+    // Close modal on Go Back button click
+    modal.querySelector('.modal-order-btn').addEventListener('click', () => modal.remove());
+}
+
+// Filters
+document.getElementById("colorSearch").addEventListener("input", renderProducts);
+document.getElementById("priceSearch").addEventListener("input", renderProducts);
+document.getElementById("waistSearch").addEventListener("input", renderProducts);
+
+// Initial render
+renderProducts();
+</script>
+
+</body>
+</html>
