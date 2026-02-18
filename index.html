@@ -21,7 +21,7 @@ header {
     background-color: #333;
     color: white;
     padding: 16px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     text-align: center;
 }
@@ -46,6 +46,21 @@ header {
     grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
     gap: 16px;
     margin-top: 16px;
+}
+
+/* SECTION HEADINGS */
+.section-title {
+    grid-column: 1 / -1;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    padding: 12px;
+    background: #1976d2;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    letter-spacing: 1px;
 }
 
 .product-card {
@@ -114,7 +129,7 @@ header {
     box-shadow: 0 0 8px #4caf50;
 }
 
-/* Modal Styles */
+/* MODAL */
 .product-modal {
     position: fixed;
     top:0;
@@ -146,14 +161,6 @@ header {
     margin-bottom:12px;
 }
 
-.modal-content h2 {
-    margin-bottom:8px;
-}
-
-.modal-content p {
-    margin:6px 0;
-}
-
 .modal-content .close {
     position:absolute;
     top:10px;
@@ -161,10 +168,9 @@ header {
     font-size:24px;
     cursor:pointer;
     font-weight:bold;
-    color:#333;
 }
 
-.modal-content .modal-order-btn {
+.modal-order-btn {
     background-color: #888;
     color:white;
     padding:8px 16px;
@@ -172,36 +178,32 @@ header {
     cursor:pointer;
     margin-top:12px;
     display:inline-block;
-    transition:0.3s;
-}
-
-.modal-content .modal-order-btn:hover {
-    background-color: #555;
 }
 </style>
-
 </head>
 
 <body>
+
 <header>Zain International Clothing</header>
 
 <div class="container">
     <input id="colorSearch" type="text" placeholder="Search by Color" class="search-bar">
     <input id="priceSearch" type="text" placeholder="Search by Price" class="search-bar">
     <input id="waistSearch" type="text" placeholder="Search by Waist" class="search-bar">
+    <input id="sizeSearch" type="text" placeholder="Search by Size (S,M,L)" class="search-bar">
 
     <div class="product-grid" id="productGrid"></div>
 </div>
 
 <script>
-// EXACTLY 13 products - ALL Blue/Navy Blue colors - ALL 1500 PKR ✓
+
 const products = [
-    // Waist 32
+
+    // ===== JEANS (PANTS) =====
     { name: "Jeans Blue W32", price: "1500", color: "Blue", waist: "32", length: "40", image: "assets/jeansblue.png" },
     { name: "Jeans Navy Blue W32", price: "1500", color: "Navy Blue", waist: "32", length: "40", image: "assets/jeansblue.png" },
     { name: "Jeans Blue W32", price: "1500", color: "Blue", waist: "32", length: "38", image: "assets/jeansblue.png" },
 
-    // Waist 34
     { name: "Jeans Navy Blue W34", price: "1500", color: "Navy Blue", waist: "34", length: "38", image: "assets/jeansblue.png" },
     { name: "Jeans Blue W34", price: "1500", color: "Blue", waist: "34", length: "37", image: "assets/jeansblue.png" },
     { name: "Jeans Navy Blue W34", price: "1500", color: "Navy Blue", waist: "34", length: "39", image: "assets/jeansblue.png" },
@@ -209,55 +211,90 @@ const products = [
     { name: "Jeans Navy Blue W34", price: "1500", color: "Navy Blue", waist: "34", length: "38", image: "assets/jeansblue.png" },
     { name: "Jeans Blue W34", price: "1500", color: "Blue", waist: "34", length: "38", image: "assets/jeansblue.png" },
 
-    // Waist 36
     { name: "Jeans Navy Blue W36", price: "1500", color: "Navy Blue", waist: "36", length: "40", image: "assets/jeansblue.png" },
     { name: "Jeans Blue W36", price: "1500", color: "Blue", waist: "36", length: "39", image: "assets/jeansblue.png" },
     { name: "Jeans Navy Blue W36", price: "1500", color: "Navy Blue", waist: "36", length: "40", image: "assets/jeansblue.png" },
-    { name: "Jeans Blue W36", price: "1500", color: "Blue", waist: "36", length: "39", image: "assets/jeansblue.png" }
+    { name: "Jeans Blue W36", price: "1500", color: "Blue", waist: "36", length: "39", image: "assets/jeansblue.png" },
+
+    // ===== T-SHIRTS =====
+    { name: "T-Shirt Blue Small", price: "1200", color: "Blue", size: "S", image: "assets/tshirtblue.png" },
+    { name: "T-Shirt Blue Medium", price: "1200", color: "Blue", size: "M", image: "assets/tshirtblue.png" },
+    { name: "T-Shirt Navy Large", price: "1200", color: "Navy Blue", size: "L", image: "assets/tshirtblue.png" },
+    { name: "T-Shirt Navy Medium", price: "1200", color: "Navy Blue", size: "M", image: "assets/tshirtblue.png" }
 ];
 
 const productGrid = document.getElementById("productGrid");
 
+function createProductCard(p) {
+
+    const card = document.createElement("div");
+    card.className = "product-card";
+
+    card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <div class="product-info">
+            <div class="top-row">
+                <div class="product-name">${p.name}</div>
+                <div class="price">${p.price} PKR</div>
+            </div>
+            <div class="bottom-row">
+                <div class="details">
+                    ${p.size 
+                        ? `Size: ${p.size}` 
+                        : `Waist: ${p.waist} | Length: ${p.length}`}
+                </div>
+                <div class="order-btn">Order Now</div>
+            </div>
+        </div>
+    `;
+
+    productGrid.appendChild(card);
+
+    const btn = card.querySelector(".order-btn");
+    setInterval(() => btn.classList.toggle("glow"), 800);
+
+    card.addEventListener('click', () => showModal(p));
+}
+
 function renderProducts() {
+
     const colorQuery = document.getElementById("colorSearch").value.toLowerCase();
     const priceQuery = document.getElementById("priceSearch").value;
     const waistQuery = document.getElementById("waistSearch").value;
+    const sizeQuery = document.getElementById("sizeSearch").value.toLowerCase();
 
     productGrid.innerHTML = "";
 
-    products.filter(p =>
+    const filteredProducts = products.filter(p =>
         p.color.toLowerCase().includes(colorQuery) &&
         p.price.includes(priceQuery) &&
-        p.waist.includes(waistQuery)
-    ).forEach(p => {
-        const card = document.createElement("div");
-        card.className = "product-card";
+        (p.waist?.includes(waistQuery) || p.size?.toLowerCase().includes(sizeQuery))
+    );
 
-        card.innerHTML = `
-            <img src="${p.image}" alt="${p.name}">
-            <div class="product-info">
-                <div class="top-row">
-                    <div class="product-name">${p.name}</div>
-                    <div class="price">${p.price} PKR</div>
-                </div>
-                <div class="bottom-row">
-                    <div class="details">Waist: ${p.waist} | Length: ${p.length}</div>
-                    <div class="order-btn">Order Now</div>
-                </div>
-            </div>
-        `;
+    const jeans = filteredProducts.filter(p => !p.size);
+    const tshirts = filteredProducts.filter(p => p.size);
 
-        productGrid.appendChild(card);
+    if (jeans.length > 0) {
+        const heading = document.createElement("div");
+        heading.className = "section-title";
+        heading.textContent = " PANTS COLLECTION";
+        productGrid.appendChild(heading);
 
-        const btn = card.querySelector(".order-btn");
-        setInterval(() => btn.classList.toggle("glow"), 800);
+        jeans.forEach(p => createProductCard(p));
+    }
 
-        card.addEventListener('click', () => showModal(p));
-    });
+    if (tshirts.length > 0) {
+        const heading = document.createElement("div");
+        heading.className = "section-title";
+        heading.textContent = " T-SHIRTS COLLECTION";
+        productGrid.appendChild(heading);
+
+        tshirts.forEach(p => createProductCard(p));
+    }
 }
 
-// Modal popup function
 function showModal(product) {
+
     const modal = document.createElement('div');
     modal.className = 'product-modal';
 
@@ -268,29 +305,29 @@ function showModal(product) {
             <h2>${product.name}</h2>
             <p><strong>Price:</strong> ${product.price} PKR</p>
             <p><strong>Color:</strong> ${product.color}</p>
-            <p><strong>Waist:</strong> ${product.waist} | <strong>Length:</strong> ${product.length}</p>
-            <p>Premium quality Blue/Navy Blue denim jeans. Perfect fit and comfort. All at 1500 PKR.</p>
+
+            ${product.size 
+                ? `<p><strong>Size:</strong> ${product.size}</p>` 
+                : `<p><strong>Waist:</strong> ${product.waist} | <strong>Length:</strong> ${product.length}</p>`}
+
+            <p>Premium quality clothing. Best price guaranteed.</p>
             <div class="modal-order-btn">Go Back</div>
         </div>
     `;
 
     document.body.appendChild(modal);
 
-    // Close modal on X click
     modal.querySelector('.close').addEventListener('click', () => modal.remove());
-
-    // Close modal on Go Back button click
     modal.querySelector('.modal-order-btn').addEventListener('click', () => modal.remove());
 }
 
-// Filters
 document.getElementById("colorSearch").addEventListener("input", renderProducts);
 document.getElementById("priceSearch").addEventListener("input", renderProducts);
 document.getElementById("waistSearch").addEventListener("input", renderProducts);
+document.getElementById("sizeSearch").addEventListener("input", renderProducts);
 
-// Initial render
 renderProducts();
-</script>
 
+</script>
 </body>
 </html>
